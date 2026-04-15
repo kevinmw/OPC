@@ -12,8 +12,9 @@ import { ensureWorkspaceDirs } from './config.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const OPC_CMD = 'uv';
-const SKILL_DIR = path.resolve(__dirname, '../../..');
+const OPC_CMD = 'python';
+const SKILL_DIR = path.resolve(__dirname, '../../../..');     // cut/ → services/ → server/ → dashboard/ → opc-cli/
+const OPC_SCRIPT = path.join(SKILL_DIR, 'opc.py');
 
 /**
  * Run ASR pipeline on audio file
@@ -25,13 +26,13 @@ export async function runAsrPipeline(audioPath, language = 'Chinese') {
   const { outputsDir } = ensureWorkspaceDirs();
   const tempFile = path.join(outputsDir, `temp_${uuidv4().substring(0, 8)}.json`);
 
-  const args = ['run', 'opc', 'asr', audioPath, '--format', 'json', '-o', tempFile];
+  const args = [OPC_SCRIPT, 'asr', audioPath, '--format', 'json', '-o', tempFile];
 
   if (language) {
     args.push('--language', language);
   }
 
-  console.log(`[ASR Service] Running: uv run opc asr "${audioPath}"`);
+  console.log(`[ASR Service] Running: python opc.py asr "${audioPath}"`);
 
   try {
     const result = await spawnProcess(OPC_CMD, args, SKILL_DIR);
