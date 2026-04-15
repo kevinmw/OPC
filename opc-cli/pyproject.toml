@@ -16,11 +16,11 @@ dependencies = [
     "modelscope",
     "huggingface_hub",
 
-    # ── Linux + NVIDIA GPU (CUDA 12.4) ──
-    "torch>=2.5.0,<2.10.0; sys_platform == 'linux'",
-    "torchaudio>=2.5.0,<2.10.0; sys_platform == 'linux'",
-    "qwen-tts; sys_platform == 'linux'",
-    "qwen-asr; sys_platform == 'linux'",
+    # ── Linux + Windows + NVIDIA GPU (CUDA 12.4) ──
+    "torch>=2.5.0,<2.10.0; sys_platform == 'linux' or sys_platform == 'win32'",
+    "torchaudio>=2.5.0,<2.10.0; sys_platform == 'linux' or sys_platform == 'win32'",
+    "qwen-tts; sys_platform == 'linux' or sys_platform == 'win32'",
+    "qwen-asr; sys_platform == 'linux' or sys_platform == 'win32'",
 
     # ── macOS + Apple Silicon (MLX) ──
     "mlx-audio[stt,tts]>=0.4.0; sys_platform == 'darwin'",
@@ -46,12 +46,12 @@ override-dependencies = [
     "transformers>=4.57.0",
 ]
 
-# Force PyTorch CUDA 12.4 index (Linux only)
+# Force PyTorch CUDA 12.4 index (Linux + Windows)
 [[tool.uv.index]]
 name = "pytorch"
 url = "https://download.pytorch.org/whl/cu124"
 explicit = true
 
 [tool.uv.sources]
-torch = { index = "pytorch", marker = "sys_platform == 'linux'" }
-torchaudio = { index = "pytorch", marker = "sys_platform == 'linux'" }
+torch = { index = "pytorch", marker = "sys_platform == 'linux' or sys_platform == 'win32'" }
+torchaudio = { index = "pytorch", marker = "sys_platform == 'linux' or sys_platform == 'win32'" }

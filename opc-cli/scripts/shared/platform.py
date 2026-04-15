@@ -20,9 +20,18 @@ def is_linux() -> bool:
     return platform.system() == "Linux"
 
 
+def is_windows() -> bool:
+    """Check if running on Windows."""
+    return platform.system() == "Windows"
+
+
 def _auto_detect_backend() -> str:
     """Auto-detect backend from OS."""
-    return "mlx" if is_macos() else "cuda"
+    if is_macos():
+        return "mlx"
+    elif is_windows() or is_linux():
+        return "cuda"
+    return "cuda"  # 默认使用 cuda
 
 
 def get_backend() -> str:
@@ -52,6 +61,8 @@ def get_backend_label() -> str:
     backend = get_backend()
     if backend == "mlx":
         return "mlx (Apple Silicon)"
+    elif is_windows():
+        return "cuda (Windows + NVIDIA GPU)"
     return "cuda (NVIDIA GPU)"
 
 

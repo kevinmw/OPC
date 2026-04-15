@@ -2,23 +2,38 @@
 
 **描述:** 多引擎 TTS 命令行工具，支持 edge-tts（微软在线）和 Qwen3-TTS（本地模型）。支持 AirPlay 和 DLNA 设备播放。
 **ASR 功能:** 基于 Qwen3-ASR 的语音识别与强制对齐，4 阶段 Pipeline 架构生成 SRT/ASS 卡拉 OK 字幕。
-**跨平台:** Linux 用 CUDA (NVIDIA GPU)，macOS 用 MLX (Apple Silicon)，命令行完全一致。
+**跨平台:** Linux 用 CUDA (NVIDIA GPU)，macOS 用 MLX (Apple Silicon)，Windows 用 CUDA (NVIDIA GPU)，命令行完全一致。
 
 ## 环境安装（uv 管理）
 
-本项目使用 uv 管理依赖，**自动检测平台**：Linux 装 CUDA 版，macOS 装 MLX 版。
+本项目使用 uv 管理依赖，**自动检测平台**：Linux 装 CUDA 版，macOS 装 MLX 版，Windows 装 CUDA 版。
 
 ```bash
 # 安装 uv（如果还没有）
+# Linux/macOS:
 curl -LsSf https://astral.sh/uv/install.sh | sh
+# Windows (PowerShell):
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 
 # 一条命令安装（自动按平台选择依赖）
-cd ~/.claude/skills/opc-cli
+cd ~/.claude/skills/opc-cli  # 或您的实际路径
 uv sync
 
 # 后续所有命令通过 uv run 执行
 uv run python scripts/opc.py --help
 ```
+
+### Windows 额外步骤
+
+Windows 用户需要先安装 PyTorch + CUDA：
+
+```bash
+# 访问 https://pytorch.org/get-started/locally/ 获取适合您 CUDA 版本的命令
+# 例如 CUDA 12.4:
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+```
+
+详见：[WINDOWS_SUPPORT.md](./WINDOWS_SUPPORT.md)
 
 **模型下载源：**
 默认使用 ModelScope（中国大陆友好），也可切换到 HuggingFace：
