@@ -14,3 +14,10 @@ node_modules/
 
 # Test files (do not release)
 test_*.py
+
+# Generated output (audio, video, subtitles, screenshots)
+output/
+*.wav
+*.mp4
+*.mp3
+*.flac
